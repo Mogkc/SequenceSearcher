@@ -169,6 +169,21 @@ public class SequenceSearchTest {
         String p = new SequenceSearchImpl(s, d0, d1).toString();
         assertFalse(p.contains(d0));
         assertFalse(p.contains(d1));
+        System.out.println(p.charAt(0));
         assertTrue(p.startsWith("Java is a programming language created by James Gosling"));
+    }
+
+    // Making sure that all sequences are found, even if the delimiter syntax is unexpected.
+    // I.e. a tagged sequence must not contain a start or end tag.
+    @Test
+    public void getAllTaggedSequencesUnexpectedSyntax() throws Exception {
+        String d0 = "{{";
+        String d1 = "}}";
+
+        String s = String.format(s0, d0, d0, d0, d0, d0, d1, d1, d0, d1, d0);
+        String[] sa = new SequenceSearchImpl(s, d0, d1).getAllTaggedSequences();
+
+        assertEquals("James Gosling", sa[0]);
+        assertTrue(sa.length == 2);
     }
 }
